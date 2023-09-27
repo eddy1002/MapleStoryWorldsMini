@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PoolChild_Tile : PoolChild
 {
-
-
 	#region PublicMember
 	public GameObject footHoldParent;
 	public GameObject footHoldLeft;
@@ -15,7 +13,28 @@ public class PoolChild_Tile : PoolChild
 	#endregion
 
 	#region PrivateMember
+	private GamePlayer gamePlayer = null;
 	private PoolParent_Tile parent = null;
+	#endregion
+
+	#region Mono
+	private void OnEnable()
+	{
+		if (GetGamePlayer() != null)
+		{
+			GetGamePlayer().onPlayChanged -= SetPlayMode;
+			GetGamePlayer().onPlayChanged += SetPlayMode;
+			SetPlayMode(GetGamePlayer().isPlay);
+		}
+	}
+
+	private void OnDisable()
+	{
+		if (GetGamePlayer() != null)
+		{
+			GetGamePlayer().onPlayChanged -= SetPlayMode;
+		}
+	}
 	#endregion
 
 	#region Override
@@ -67,6 +86,20 @@ public class PoolChild_Tile : PoolChild
 		}
 
 		return parent;
+	}
+
+	private GamePlayer GetGamePlayer()
+	{
+		// 할당한 것이 없으면 새로 할당
+		if (gamePlayer == null)
+		{
+			if (GetParent() != null)
+			{
+				gamePlayer = GetParent().gamePlayer;
+			}
+		}
+
+		return gamePlayer;
 	}
 
 	private void SetLeftTile(bool active)
@@ -130,6 +163,16 @@ public class PoolChild_Tile : PoolChild
 		if (bottomTile != null)
 		{
 			SetFoolHold(bottomTile.footHoldTop, !active);
+		}
+	}
+	#endregion
+
+	#region Callback
+	public void SetPlayMode(bool isPlay)
+	{
+		if (footHoldParent != null && footHoldParent.gameObject.activeSelf != !isPlay)
+		{
+			footHoldParent.gameObject.SetActive(!isPlay);
 		}
 	}
 	#endregion

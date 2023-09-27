@@ -3141,6 +3141,7 @@ MonoBehaviour:
   pathList:
   - Prefabs/Tile_000
   tileSize: 100
+  gamePlayer: {fileID: 961479698}
 --- !u!1 &1496305143
 GameObject:
   m_ObjectHideFlags: 0

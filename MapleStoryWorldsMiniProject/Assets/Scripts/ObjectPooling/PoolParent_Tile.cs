@@ -6,6 +6,7 @@ public class PoolParent_Tile : PoolParent
 {
 	#region PublicMember
 	public float tileSize = 100f;
+	public GamePlayer gamePlayer;
 	public readonly Dictionary<Vector2, PoolChild_Tile> tileMapDic = new Dictionary<Vector2, PoolChild_Tile>();
 	#endregion
 
